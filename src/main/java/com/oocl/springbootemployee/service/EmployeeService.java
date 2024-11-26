@@ -51,9 +51,6 @@ public class EmployeeService {
         if (!employeeExisted.getActive())
             throw new EmployeeInactiveException();
 
-        employeeExisted.setAge(employee.getAge());
-        employeeExisted.setSalary(employee.getSalary());
-
         return employeeRepository.save(employee);
     }
 
