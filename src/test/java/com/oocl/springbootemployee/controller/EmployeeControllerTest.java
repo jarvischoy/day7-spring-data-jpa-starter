@@ -1,15 +1,7 @@
 package com.oocl.springbootemployee.controller;
 
-import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
-import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.hamcrest.Matchers.hasSize;
-
 import com.oocl.springbootemployee.model.Employee;
 import com.oocl.springbootemployee.model.Gender;
-import com.oocl.springbootemployee.repository.EmployeeInMemoryRepository;
-
-import java.util.List;
-
 import com.oocl.springbootemployee.repository.EmployeeRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,10 +11,15 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
+import java.util.List;
+
+import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.hasSize;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -33,9 +30,6 @@ class EmployeeControllerTest {
     private MockMvc client;
 
     @Autowired
-    private EmployeeInMemoryRepository employeeInMemoryRepository;
-
-    @Autowired
     private EmployeeRepository employeeRepository;
 
     @Autowired
@@ -43,7 +37,6 @@ class EmployeeControllerTest {
 
     @BeforeEach
     void setUp() {
-        giveDataToRepository();
         giveDataToJpaRepository();
     }
 
@@ -54,15 +47,6 @@ class EmployeeControllerTest {
         employeeRepository.save(new Employee(null, "David Williams", 35, Gender.MALE, 5500.0));
         employeeRepository.save(new Employee(null, "Emily Brown", 23, Gender.FEMALE, 4500.0));
         employeeRepository.save(new Employee(null, "Michael Jones", 40, Gender.MALE, 7000.0));
-    }
-
-    private void giveDataToRepository() {
-        employeeInMemoryRepository.findAll().clear();
-        employeeInMemoryRepository.create(new Employee(1, "John Smith", 32, Gender.MALE, 5000.0));
-        employeeInMemoryRepository.create(new Employee(2, "Jane Johnson", 28, Gender.FEMALE, 6000.0));
-        employeeInMemoryRepository.create(new Employee(3, "David Williams", 35, Gender.MALE, 5500.0));
-        employeeInMemoryRepository.create(new Employee(4, "Emily Brown", 23, Gender.FEMALE, 4500.0));
-        employeeInMemoryRepository.create(new Employee(5, "Michael Jones", 40, Gender.MALE, 7000.0));
     }
 
     @Test
