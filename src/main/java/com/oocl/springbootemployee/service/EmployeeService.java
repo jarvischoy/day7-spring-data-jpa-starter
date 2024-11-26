@@ -8,6 +8,7 @@ import com.oocl.springbootemployee.model.Gender;
 import com.oocl.springbootemployee.repository.EmployeeInMemoryRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.oocl.springbootemployee.repository.EmployeeRepository;
 import org.springframework.stereotype.Service;
@@ -28,7 +29,7 @@ public class EmployeeService {
     }
 
     public List<Employee> findAll(Gender gender) {
-        return employeeInMemoryRepository.findAllByGender(gender);
+        return employeeRepository.getAllByGender(gender);
     }
 
     public List<Employee> findAll(Integer page, Integer pageSize) {
@@ -36,7 +37,7 @@ public class EmployeeService {
     }
 
     public Employee findById(Integer employeeId) {
-        return employeeInMemoryRepository.findById(employeeId);
+        return employeeRepository.findById(employeeId).orElse(null);
     }
 
     public Employee create(Employee employee) {
@@ -50,14 +51,17 @@ public class EmployeeService {
     }
 
     public Employee update(Integer employeeId, Employee employee) {
-        Employee employeeExisted = employeeInMemoryRepository.findById(employeeId);
+        Employee employeeExisted = findById(employeeId);
         if (!employeeExisted.getActive())
             throw new EmployeeInactiveException();
 
-        return employeeInMemoryRepository.update(employeeId, employee);
+        employeeExisted.setAge(employee.getAge());
+        employeeExisted.setSalary(employee.getSalary());
+
+        return employeeRepository.save(employee);
     }
 
     public void delete(Integer employeeId) {
-        employeeInMemoryRepository.deleteById(employeeId);
+        employeeRepository.deleteById(employeeId);
     }
 }
