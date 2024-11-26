@@ -41,8 +41,6 @@ class EmployeeServiceTest {
     void should_return_the_given_employees_when_getAllEmployees() {
         //given
         when(employeeService.findAll()).thenReturn(List.of(new Employee(1, "Lucy", 18, Gender.FEMALE, 8000.0)));
-        EmployeeService employeeService = new EmployeeService(employeeInMemoryRepository, employeeRepository);
-
         //when
         List<Employee> allEmployees = employeeService.findAll();
 
@@ -54,11 +52,8 @@ class EmployeeServiceTest {
     @Test
     void should_return_the_created_employee_when_create_given_a_employee() {
         //given
-        EmployeeRepository mockedEmployeeRepository = mock(EmployeeRepository.class);
         Employee lucy = new Employee(1, "Lucy", 18, Gender.FEMALE, 8000.0);
-        when(mockedEmployeeRepository.create(any())).thenReturn(lucy);
-        EmployeeService employeeService = new EmployeeService(mockedEmployeeRepository);
-
+        when(employeeRepository.save(any())).thenReturn(lucy);
         //when
         Employee createdEmployee = employeeService.create(lucy);
 
